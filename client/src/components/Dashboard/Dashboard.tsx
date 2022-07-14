@@ -20,6 +20,7 @@ import {Routes, Route, useLocation, NavLink} from "react-router-dom";
 import {LessonsList} from "../Lessons/LessonsList/LessonsList";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import {AddLessonForm} from "../AddLessonForm/AddLessonForm";
+import {Lesson} from "../Lessons/Lesson/Lesson";
 
 const drawerWidth = 240;
 
@@ -78,6 +79,11 @@ const drawerItemsList = [
         {
             title: 'Lessons',
             link: '/lessons',
+            icon: <PlayLessonIcon/>
+        },
+        {
+            title: 'Single Lesson',
+            link: '/single-lesson',
             icon: <PlayLessonIcon/>
         },
         {
@@ -158,7 +164,7 @@ export const Dashboard = (props: Props) => {
                     >
                         Tutorial Notes
                     </Typography>
-                    <Search>
+                    {location.pathname === '/lessons' && <Search>
                         <SearchIconWrapper>
                             <SearchIcon/>
                         </SearchIconWrapper>
@@ -166,7 +172,7 @@ export const Dashboard = (props: Props) => {
                             placeholder="Search…"
                             inputProps={{'aria-label': 'search'}}
                         />
-                    </Search>
+                    </Search>}
                 </Toolbar>
             </AppBar>
             <Box
@@ -203,12 +209,13 @@ export const Dashboard = (props: Props) => {
             </Box>
             <Box
                 component="main"
-                sx={{flexGrow: 1, p: 3, width: {sm: `calc(100% - ${drawerWidth}px)`}}}
+                sx={{flexGrow: 1, p: {xs: 1, sm: 3}, width: {sm: `calc(100% - ${drawerWidth}px)`}}}
             >
                 <Toolbar/>
                 <AnimatePresence exitBeforeEnter>
                     <Routes location={location} key={location.pathname}>
                         <Route path={"/lessons"} element={<LessonsList/>}/>
+                        <Route path={"/single-lesson"} element={<Lesson/>}/>
                         <Route path={"/add-lesson"} element={<AddLessonForm/>}/>
                         {/*<Route path={"/info"} element={<Info/>}/>*/}
                     </Routes>
