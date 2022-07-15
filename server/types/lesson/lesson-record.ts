@@ -4,8 +4,13 @@ export interface NewLessonRecord extends Omit<LessonEntity, 'id'> {
 
 export interface LessonEntity {
     id: string;
-    url: string;
+    videoId: string;
+    thumbnail: string;
+    title: string;
+    author: string;
+    description: string;
     createdAt: string;
     isImportant: number;
     userId: string;
+    link: string;
 }

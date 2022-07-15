@@ -9,19 +9,30 @@ type AdRecordResults = [LessonEntity[], FieldPacket[]]
 export class LessonRecord implements LessonEntity {
     id: string;
     createdAt: string;
-    url: string;
     isImportant: number;
     userId: string;
+    videoId: string;
+    thumbnail: string;
+    title: string;
+    author: string;
+    description: string;
+    link: string;
 
     constructor(obj: NewLessonRecord) {
-        if (!obj.url || obj.url.length > 100) {
-            throw new ValidationError('Tutorial url address must be between 1 and 100 characters long...')
+        if (!obj.link || obj.link.length > 100) {
+            throw new ValidationError('Tutorial link address must be between 1 and 100 characters long...')
         }
+
         this.id = obj.id
-        this.url = obj.url
         this.createdAt = obj.createdAt
         this.isImportant = obj.isImportant
         this.userId = obj.userId
+        this.videoId = obj.videoId
+        this.thumbnail = obj.thumbnail
+        this.title = obj.title
+        this.author = obj.author
+        this.description = obj.description
+        this.link = obj.link
     }
 
 
@@ -48,6 +59,7 @@ export class LessonRecord implements LessonEntity {
             throw new Error('Cannot insert something already inserted...')
         }
 
-        await pool.execute("INSERT INTO `lessons`(`id`, `url`,`createdAt`, `isImportant`, `userId`) VALUES(:id, :url,:createdAt, :isImportant, :userId)", this)
+        await pool.execute("INSERT INTO `lessons`(`id`,`videoId`,`thumbnail`, `title`,  `author`, `description`,`createdAt`, `isImportant`, `link`,`userId`) VALUES(:id, :videoId, :thumbnail, :title, :author, :description, :createdAt, :isImportant, :link, :userId)", this)
     }
 }
+
