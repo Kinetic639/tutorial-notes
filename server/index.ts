@@ -5,11 +5,14 @@ import {handleError} from "./utils/errors/errors";
 import rateLimit from 'express-rate-limit'
 import {config} from "./config/config";
 import {lessonRouter} from "./routers/lessons.router";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const app = express()
 
 app.use(cors({
-    origin: config.corsOrigin
+    origin: process.env.CORS_ORIGIN
 }))
 
 app.use(json())
@@ -28,7 +31,7 @@ router.use('/lessons', lessonRouter)
 app.use('/api', router)
 
 app.use(handleError);
-const port = 3001
+const port = Number(process.env.PORT) || 3001;
 
 app.get('/api', (req, res) => {
     res.send(`Mega ogłoszenia running on ${port}`);
