@@ -21,6 +21,10 @@ import {LessonsList} from "../Lessons/LessonsList/LessonsList";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import {AddLessonForm} from "../AddLessonForm/AddLessonForm";
 import {Lesson} from "../Lessons/Lesson/Lesson";
+import {useAppDispatch, useAppSelector} from "../../redux/app/hooks";
+import {Avatar, CircularProgress, Grid} from "@mui/material";
+import {useEffect} from "react";
+import {getLessonsAsync} from "../../redux/features/lessons-slice";
 
 const drawerWidth = 240;
 
@@ -101,20 +105,39 @@ const drawerItemsList = [
 ]
 
 export const Dashboard = (props: Props) => {
+    const dispatch = useAppDispatch()
+    const user = useAppSelector(store => store.user.user)
+    const lessons = useAppSelector(store => store.lessons.lessons)
     const location = useLocation()
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
+    useEffect(() => {
+        dispatch(getLessonsAsync())
+    }, [])
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    if (!user || !lessons) {
+        return <CircularProgress/>
+    }
 
     const drawer = (
         <div>
             <Toolbar/>
-
-            {drawerItemsList.map(list => (
-                <>
+            {user && <Grid container spacing={1} sx={{padding: '20px 0'}}>
+                <Grid item xs={12}>
+                    <Avatar sx={{margin: '0 auto', width: 56, height: 56}}>{user.name[0].toUpperCase()}</Avatar>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography gutterBottom sx={{typography: {sm: 'h5', xs: 'h6'}, textAlign: 'center'}}>
+                        {user.name}
+                    </Typography>
+                </Grid>
+            </Grid>}
+            {drawerItemsList.map((list, index) => (
+                <div key={index}>
                     <Divider/>
                     {
                         list.map((el, index) => (
@@ -129,7 +152,7 @@ export const Dashboard = (props: Props) => {
                         ))
 
                     }
-                </>
+                </div>
             ))
             }
         </div>
@@ -214,7 +237,7 @@ export const Dashboard = (props: Props) => {
                 <Toolbar/>
                 <AnimatePresence exitBeforeEnter>
                     <Routes location={location} key={location.pathname}>
-                        <Route path={"/lessons"} element={<LessonsList/>}/>
+                        <Route path={"/lessons"} element={<LessonsList lessons={lessons}/>}/>
                         <Route path={"/single-lesson"} element={<Lesson/>}/>
                         <Route path={"/add-lesson"} element={<AddLessonForm/>}/>
                         {/*<Route path={"/info"} element={<Info/>}/>*/}
