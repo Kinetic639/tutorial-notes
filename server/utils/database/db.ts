@@ -1,12 +1,14 @@
 import {createPool} from "mysql2/promise";
-import {config} from "../../config/config";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 
 export const pool = createPool({
-    host: config.dbHost,
-    user: config.dbUser,
-    password: config.dbPassword,
-    database: config.dbDatabase,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    database: process.env.DB_DATABASE,
     namedPlaceholders: true,
     decimalNumbers: true
 })
+
