@@ -3,7 +3,7 @@ import cors from "cors";
 import 'express-async-errors'
 import {handleError} from "./utils/errors/errors";
 import rateLimit from 'express-rate-limit'
-import {config} from "./config/config";
+// import {config} from "./config/config";
 import {lessonRouter} from "./routers/lessons.router";
 import dotenv from "dotenv"
 
