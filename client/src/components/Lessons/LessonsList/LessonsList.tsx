@@ -1,14 +1,18 @@
 import React from "react";
 import {Grid} from "@mui/material";
 import {LessonCard} from "../../LessonCard/LessonCard";
+import {useAppSelector} from "../../../redux/app/hooks";
+import {LessonEntity} from "types";
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+interface Props {
+    lessons: LessonEntity[]
+}
 
-export const LessonsList = () => {
+export const LessonsList = ({lessons}: Props) => {
     return <Grid container spacing={4}>
-        {cards.map((card, index) => (
+        {lessons.map((card, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
-                <LessonCard/>
+                <LessonCard cardData={card}/>
             </Grid>
         ))}
     </Grid>

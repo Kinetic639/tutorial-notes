@@ -22,11 +22,11 @@ const sampleLesson = {
 export const Lesson = () => {
     return (
         <div>
-            <Grid item xs={12} sx={{marginBottom: '15px'}}>
-                <Typography variant="caption">
-                    #javasript #programming #ts #webdev
-                </Typography>
-            </Grid>
+            {/*<Grid item xs={12} sx={{marginBottom: '15px'}}>*/}
+            {/*    <Typography variant="caption">*/}
+            {/*        #javasript #programming #ts #webdev*/}
+            {/*    </Typography>*/}
+            {/*</Grid>*/}
 
             <Grid container spacing={1} sx={{marginBottom: '20px'}}>
 

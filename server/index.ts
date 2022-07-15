@@ -4,6 +4,7 @@ import 'express-async-errors'
 import {handleError} from "./utils/errors/errors";
 import rateLimit from 'express-rate-limit'
 import {config} from "./config/config";
+import {lessonRouter} from "./routers/lessons.router";
 
 const app = express()
 
@@ -20,11 +21,11 @@ app.use(rateLimit({
 
 
 //Routes
-// const router = Router()
+const router = Router()
 
-// router.use('/lesson', adRouter)
+router.use('/lessons', lessonRouter)
 
-// app.use('/api', router)
+app.use('/api', router)
 
 app.use(handleError);
 const port = 3001
