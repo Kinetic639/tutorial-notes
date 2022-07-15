@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {LessonEntity} from "types";
 import StarIcon from '@mui/icons-material/Star';
+import {truncateString} from "../../utils/turncate";
 
 interface Props {
     cardData: LessonEntity
@@ -17,31 +18,37 @@ export const LessonCard = ({cardData}: Props) => {
     const date = new Date(cardData.createdAt)
     return (
         <Card
-            sx={{height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer'}}
+            sx={{
+                height: '100%',
+                display: 'flex',
+                maxWidth: '380px',
+                flexDirection: 'column',
+                cursor: 'pointer',
+                margin: '0 auto'
+            }}
         >
             <CardMedia
                 component="img"
-                image={`https://img.youtube.com/vi/${cardData.url}/maxresdefault.jpg`}
+                image={cardData.thumbnail}
                 alt="random"
             />
             <CardContent sx={{flexGrow: 1}}>
 
                 <Typography component='div' sx={{display: 'flex', justifyContent: 'flex-end'}} gutterBottom
                             variant="caption">
-                    Created: {date.toLocaleString()}
+                    Created: {cardData.createdAt}
                 </Typography>
                 {/*<Typography gutterBottom variant="caption">*/}
                 {/*    #javasript #programming #ts #webdev*/}
                 {/*</Typography>*/}
                 <Typography gutterBottom variant="h5" component="h2">
-                    Heading
+                    {truncateString(cardData.title, 100)}
                 </Typography>
                 <Typography gutterBottom variant="subtitle2">
-                    Author
+                    {cardData.author}
                 </Typography>
                 <Typography>
-                    This is a media card. You can use this section to describe the
-                    content.
+                    {truncateString(cardData.description, 100)}
                 </Typography>
             </CardContent>
             <CardActions>
