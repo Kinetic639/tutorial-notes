@@ -1,111 +1,127 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {useFormik} from 'formik';
-import * as yup from 'yup';
+import React, {SyntheticEvent, useEffect, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import {Button, Grid} from '@mui/material';
+import {LessonCard} from "../LessonCard/LessonCard";
+import {LessonEntity} from "types";
+import {useAppDispatch} from "../../redux/app/hooks";
+import {addLessonAsync} from "../../redux/features/lessons-slice";
 
-const validationSchema = yup.object({
-    tags: yup
-        .string().default('Enter your email').defined()
-        .email('Enter a valid email')
-        .required('Email is required'),
-    link: yup
-        .string().default('Enter your email').defined()
-        .email('Enter a valid email')
-        .required('Email is required'),
-    email: yup
-        .string().default('Enter your email').defined()
-        .email('Enter a valid email')
-        .required('Email is required'),
-    password: yup
-        .string().default('Enter your password').defined()
-        .required('Password is required'),
-});
 
 export const AddLessonForm = () => {
-    const formik = useFormik({
-        initialValues: {
-            email: 'foobar@example.com',
-            password: 'foobar',
-            link: '',
-            tags: ''
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
-        },
-    });
+    const dispatch = useAppDispatch()
 
+    const [form, setForm] = useState({
+        link: '',
+        author: "",
+        description: "",
+        thumbnail: "",
+        title: "",
+        videoId: "",
+        createdAt: (new Date()).toLocaleString(),
+        isImportant: 0,
+        userId: 'aaaa'
+    })
+
+    const updateForm = (key: string, value: any) => {
+        setForm(form => ({
+            ...form,
+            [key]: value,
+        }))
+    }
+
+    const updateLessonCard = async (value: any) => {
+
+        const YouTubeGetID = (url: any) => {
+            url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+            return url[2] !== undefined ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+        };
+
+
+        const videoId = YouTubeGetID(value)
+
+        const videoRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyDa_pBxp3YXhmex0-Bx5QWzvaAvQ-AIgLg`)
+        const videoData = await videoRes.json()
+
+        await updateForm('link', value)
+        await updateForm('videoId', videoId)
+        await updateForm('title', videoData.items[0].snippet.title)
+        await updateForm('author', videoData.items[0].snippet.channelTitle)
+        await updateForm('description', videoData.items[0].snippet.description)
+        await updateForm('thumbnail', videoData.items[0].snippet.thumbnails.high.url)
+    }
+
+    const handleSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
+        dispatch(addLessonAsync(form))
+    }
     return (
-        <div>
-            <form onSubmit={formik.handleSubmit}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            id="tags"
-                            name="tags"
-                            label="tags"
-                            size='small'
-                            value={formik.values.tags}
-                            onChange={formik.handleChange}
-                            error={formik.touched.tags && Boolean(formik.errors.tags)}
-                            helperText={formik.touched.tags && formik.errors.tags}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            id="link"
-                            name="link"
-                            label="link"
-                            size='small'
-                            value={formik.values.link}
-                            onChange={formik.handleChange}
-                            error={formik.touched.link && Boolean(formik.errors.link)}
-                            helperText={formik.touched.link && formik.errors.link}
-                        />
-                    </Grid>
+        <Grid container spacing={2} sx={{justifyContent: 'center'}}>
+            <Grid item xs={12} md={6} lg={8} xl={7}>
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={3}
+                          sx={{maxWidth: '600px', margin: {xs: '0 auto', md: '0'}, paddingRight: '30px'}}>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="link"
+                                name="link"
+                                required
+                                label="link"
+                                inputProps={{pattern: `^.*((youtu.be\\/)|(v\\/)|(\\/u\\/\\w\\/)|(embed\\/)|(watch\\?))\\??v?=?([^#&?]*).*`}}
+                                size='small'
+                                value={form.link}
+                                onChange={e => updateLessonCard(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="title"
+                                name="title"
+                                label="title"
+                                required
+                                size='small'
+                                value={form.title}
+                                onChange={e => updateForm('title', e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="author"
+                                name="author"
+                                label="author"
+                                required
+                                size='small'
+                                value={form.author}
+                                onChange={e => updateForm('author', e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="description"
+                                name="description"
+                                label="description"
+                                required
+                                size='small'
+                                value={form.description}
+                                onChange={e => updateForm('description', e.target.value)}
+                            />
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            id="email"
-                            name="email"
-                            label="Email"
-                            size='small'
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            helperText={formik.touched.email && formik.errors.email}
-                        />
-                    </Grid>
 
-
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            id="password"
-                            name="password"
-                            label="Password"
-                            type="text"
-                            size='small'
-                            value={formik.values.password}
-                            onChange={formik.handleChange}
-                            error={formik.touched.password && Boolean(formik.errors.password)}
-                            helperText={formik.touched.password && formik.errors.password}
-                        />
+                        <Grid item xs={12}>
+                            <Button sx={{maxWidth: '600px', margin: '0 auto'}} color="primary" variant="contained"
+                                    fullWidth
+                                    type="submit">
+                                Add Lesson
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button sx={{maxWidth: '500px', margin: '0 auto'}} color="primary" variant="contained" fullWidth
-                                type="submit">
-                            Add Lesson
-                        </Button>
-                    </Grid>
-                </Grid>
-            </form>
-        </div>
+                </form>
+            </Grid>
+        </Grid>
     );
 };
 
