@@ -2,6 +2,7 @@
   "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "es5",
+    "homepage": ".",
     "lib": [
       "dom",
       "dom.iterable",
