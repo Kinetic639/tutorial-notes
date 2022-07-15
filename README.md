@@ -5,6 +5,8 @@ Backend z baza danych mySQL zahostowałem na Heroku i działa
 Frontend próbowałem zahostować na Netlify, jednak niestety się nie udało.
 Jak tylko networkmanager wróci do działania zahostuję całość. Na chwilę obecną dodam screeny z frontu.
 
+![front end gif](https://github.com/Kinetic639/tutorial-notes/blob/main/client/public/img/front.gif?raw=true)
+
 # Tutorial-Notes
 
 Projekt na zaliczenie z MegaK
@@ -29,5 +31,5 @@ dodawania filmów do bazy danych
 
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
 
-![front end gif](https://prnt.sc/SBubY6uJyTf2)
+
 
