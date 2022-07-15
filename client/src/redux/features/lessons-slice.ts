@@ -4,7 +4,7 @@ import {LessonEntity, NewLessonRecord} from "types";
 export const getLessonsAsync = createAsyncThunk(
     'lessons/getLessonsAsync',
     async (userId) => {
-        const res = await fetch(`http://localhost:3001/api/lessons/aaaa`)
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/lessons/aaaa`)
         const data = await res.json()
         return data
     })
@@ -12,7 +12,7 @@ export const getLessonsAsync = createAsyncThunk(
 export const addLessonAsync = createAsyncThunk(
     'lessons/addLessonAsync',
     async (payload: NewLessonRecord, {dispatch}) => {
-        const res = await fetch(`http://localhost:3001/api/lessons/`, {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/lessons/`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(payload),
