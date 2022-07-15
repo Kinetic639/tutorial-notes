@@ -1,11 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {LessonEntity, NewLessonRecord} from "types";
-import {REACT_APP_API_URL} from "../../config";
+// import {REACT_APP_API_URL} from "../../config";
 
 export const getLessonsAsync = createAsyncThunk(
     'lessons/getLessonsAsync',
     async (userId) => {
-        const res = await fetch(`${REACT_APP_API_URL}/api/lessons/aaaa`)
+        const res = await fetch(`https://tutorial-notes.herokuapp.com/api/lessons/aaaa`)
         const data = await res.json()
         return data
     })
@@ -13,7 +13,7 @@ export const getLessonsAsync = createAsyncThunk(
 export const addLessonAsync = createAsyncThunk(
     'lessons/addLessonAsync',
     async (payload: NewLessonRecord, {dispatch}) => {
-        const res = await fetch(`${REACT_APP_API_URL}/api/lessons/`, {
+        const res = await fetch(`https://tutorial-notes.herokuapp.com/api/lessons/`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(payload),
