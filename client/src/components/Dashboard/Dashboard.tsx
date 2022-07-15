@@ -16,7 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
 import PlayLessonIcon from '@mui/icons-material/PlayLesson';
 import {AnimatePresence} from "framer-motion";
-import {Routes, Route, useLocation, NavLink} from "react-router-dom";
+import {Routes, Route, useLocation, NavLink, Navigate} from "react-router-dom";
 import {LessonsList} from "../Lessons/LessonsList/LessonsList";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import {AddLessonForm} from "../AddLessonForm/AddLessonForm";
@@ -237,6 +237,8 @@ export const Dashboard = (props: Props) => {
                 <Toolbar/>
                 <AnimatePresence exitBeforeEnter>
                     <Routes location={location} key={location.pathname}>
+                        <Route path="/" element={<Navigate replace to="/lessons"/>}/>
+
                         <Route path={"/lessons"} element={<LessonsList lessons={lessons}/>}/>
                         <Route path={"/single-lesson"} element={<Lesson/>}/>
                         <Route path={"/add-lesson"} element={<AddLessonForm/>}/>
